@@ -1,0 +1,42 @@
+html {
+    width: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.navbar {
+    width: 100%;
+    background-color: rgb(93, 93, 93);
+    padding: 5px 0;
+}
+
+.navbar-links {
+    margin: auto;
+}
+
+.navbar-link {
+    display: inline-block;
+    padding: 10px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-link:hover {
+    background-color: #cacaca;
+    color: black;
+}
+footer {
+    display: inline-block;
+    width: 100%;
+    clear: both;
+    margin: 0 auto;
+    text-align: center;
+    height: 50px;
+    background-color: #5d5d5d;
+    color: white;
+}
