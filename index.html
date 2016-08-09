@@ -11,12 +11,12 @@
         <header>
             <div class="navbar">
                 <ul class="navbar-links">
-                    <a href=""><li class="navbar-link">Navbar Link 1</li></a>
-                    <a href=""><li class="navbar-link">Navbar Link 2</li></a>
-                    <a href=""><li class="navbar-link">Navbar Link 3</li></a>
-                    <a href=""><li class="navbar-link">Navbar Link 4</li></a>
-                    <a href=""><li class="navbar-link">Navbar Link 5</li></a>
-                    <a href=""><li class="navbar-link">Navbar Link 6</li></a>
+                    <li class="navbar-link" id="linkHome">Home</li>
+                    <li class="navbar-link" id="linkLogin">Login</li>
+                    <li class="navbar-link" id="linkRegister">Register</li>
+                    <li class="navbar-link" id="linkAdverts">Adverts</li>
+                    <li class="navbar-link" id="linkNewAdvert">New Advert</li>
+                    <li class="navbar-link" id="linkLogout">Logout</li>
                 </ul>
             </div>
         </header>
@@ -40,19 +40,59 @@
             </section>
 
             <section id="viewLogin">
-
+                <h1>Login</h1>
+                <form id="formLogin">
+                    <div>Username:</div>
+                    <input type="text" id="loginUser" required/>
+                    <div>Password:</div>
+                    <input type="text" id="loginPassword" required/>
+                    <div><input type="submit" value="Login"></div>
+                </form>
             </section>
 
             <section id="viewRegister">
+                <h1>Register:</h1>
+                <form id="formRegister">
+                    <div>Username:</div>
+                    <input type="text" id="registerUser" required/>
+                    <div>Password:</div>
+                    <input type="text" id="registerPassword" required/>
+                    <div>Password again:</div>
+                    <input type="text" id="registerPasswordConfirm" required/>
 
+                    <div><input type="submit" value="Register"></div>
+                </form>
             </section>
 
             <section id="viewAdverts">
+                <h1>Adverts</h1>
+                <div id="adverts">
 
+                </div>
             </section>
 
-            <section id="newAdvert">
-
+            <section id="viewNewAdvert">
+                <h1>New Advert</h1>
+                <form id="formCreateAdvert">
+                    <div>Title of the advert:</div>
+                    <div><input type="text" id="advertTitle" required/></div>
+                    <div>Category of the advert:</div>
+                    <div><select id="advertCategory" required>
+                        <option value="1">Electronics</option>
+                        <option value="2">Home & decoration</option>
+                        <option value="3">Books</option>
+                        <option value="4">Clothes</option>
+                        <option value="5">Cars</option>
+                        <option value="6">Shoes</option>
+                        <option value="7">Tools</option>
+                        <option value="8">Miscellaneous</option>
+                    </select></div>
+                    <div>Description:</div>
+                    <div><textarea id="advertDescription" required></textarea></div>
+                    <div>Price:</div>
+                    <div><input type="number" id="advertPrice" required/></div>
+                    <div><input type="submit" value="Post"/></div>
+                </form>
             </section>
 
             <section id="viewBlogPosts">
@@ -63,11 +103,10 @@
 
             </section>
 
-            <p> This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit This is just sample text please ignore all this cosmic bullshit </p>
         </main>
 
         <footer>
-            <p> &copy; Yavkata 2016 - 2076 (the year I expect to die in Kapparino) </p>
+            <p style="color: #ffffff"> &copy; Yavkata 2016 - 2xxx </p>
         </footer>
     </body>
 </html>
