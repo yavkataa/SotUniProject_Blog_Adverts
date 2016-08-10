@@ -16,62 +16,65 @@
                     <li class="navbar-link" id="linkRegister">Register</li>
                     <li class="navbar-link" id="linkAdverts">Adverts</li>
                     <li class="navbar-link" id="linkNewAdvert">New Advert</li>
-                    <li class="navbar-link" id="linkLogout">Logout</li>
+                    <li class="navbar-link" id="linkLogout" onclick="logout()">Logout</li>
                 </ul>
+                <div id="headerGreeting"></div>
             </div>
         </header>
 
         <main>
-            <section id="loadingBox">
-                <p>Loading...</p>
-            </section>
+            <div id="loadingBox" style="display: none;">
+                Loading...
+            </div>
 
-            <section id="infoBox" onclick="$(this).fadeOut(500)">
-                InfoBox
-            </section>
+            <div id="infoBox" style="display: none;">
+            </div>
 
-            <section id="errorBox" onclick="$(this).fadeOut(500)">
-                <p>Error</p>
-            </section>
+            <div id="errorBox"style="display: none;">
+            </div>
 
-            <section id="viewHome">
+            <section id="viewHome" style="display: none;">
                 <h1>Welcome to this sh!t</h1>
                 <div>Ayy you made it, make yourself at home tho</div>
             </section>
 
-            <section id="viewLogin">
+            <section id="viewLogin" style="display: none;">
                 <h1>Login</h1>
                 <form id="formLogin">
                     <div>Username:</div>
                     <input type="text" id="loginUser" required/>
                     <div>Password:</div>
-                    <input type="text" id="loginPassword" required/>
-                    <div><input type="submit" value="Login"></div>
+                    <input type="password" id="loginPassword" required/>
+                    <div><button type="submit">Login</button></div>
                 </form>
             </section>
 
-            <section id="viewRegister">
+            <section id="viewRegister" style="display: none;">
                 <h1>Register:</h1>
                 <form id="formRegister">
                     <div>Username:</div>
                     <input type="text" id="registerUser" required/>
                     <div>Password:</div>
-                    <input type="text" id="registerPassword" required/>
+                    <input type="password" id="registerPassword" required/>
                     <div>Password again:</div>
-                    <input type="text" id="registerPasswordConfirm" required/>
+                    <input type="password" id="registerPasswordConfirm" required/>
+                    <div>Full Name:</div>
+                    <input type="text" id="registerFullName" required/>
+                    <div>Email:</div>
+                    <input type="email" id="registerEmail" required/>
 
-                    <div><input type="submit" value="Register"></div>
+                    <div><button type="submit" id="buttonRegister">Register</button></div>
                 </form>
             </section>
 
-            <section id="viewAdverts">
+            <section id="viewAdverts" style="display: none;">
                 <h1>Adverts</h1>
                 <div id="adverts">
 
                 </div>
             </section>
 
-            <section id="viewNewAdvert">
+            <section id="viewNewAdvert" style="display: none;">
                 <h1>New Advert</h1>
                 <form id="formCreateAdvert">
                     <div>Title of the advert:</div>
@@ -95,11 +98,11 @@
                 </form>
             </section>
 
-            <section id="viewBlogPosts">
+            <section id="viewBlogPosts" style="display: none;">
 
             </section>
 
-            <section id="createBlogPost">
+            <section id="createBlogPost" style="display: none;">
 
             </section>
 

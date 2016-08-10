@@ -1,5 +1,7 @@
 html {
     width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -10,10 +12,6 @@ h1, p, div {
     color: #494949;
 }
 
-div {
-    margin: 5px 0 5px 0;
-}
-
 .navbar {
     width: 100%;
     background-color: rgb(93, 93, 93);
@@ -22,6 +20,7 @@ div {
 
 .navbar-links {
     margin: auto;
+    display: inline-block;
 }
 
 .navbar-link {
@@ -39,6 +38,14 @@ div {
     cursor: pointer;
     transition: background-color .3s, color .3s;
 }
+
+#headerGreeting {
+    padding: 10px;
+    display: inline-block;
+    float: right;
+    color: #cacaca;
+    font-size: 22px;
+}
 footer {
     display: inline-block;
     width: 100%;
@@ -53,6 +60,11 @@ footer {
     background-color: #cacaca;
     color: #494949;
 }
+
 section {
+    padding: 20px;
+}
+
+#infoBox, #errorBox, #loadingBox {
     padding: 20px;
 }
