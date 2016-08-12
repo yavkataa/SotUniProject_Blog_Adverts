@@ -24,13 +24,13 @@
 
         <main>
             <div id="loadingBox" style="display: none;">
-                Loading...
+                <img width="32px" height="32px" src="images/loading.gif"/>
             </div>
 
             <div id="infoBox" style="display: none;">
             </div>
 
-            <div id="errorBox"style="display: none;">
+            <div id="errorBox" style="display: none;">
             </div>
 
             <section id="viewHome" style="display: none;">
@@ -42,10 +42,10 @@
                 <h1>Login</h1>
                 <form id="formLogin">
                     <div>Username:</div>
-                    <input type="text" id="loginUser" required/>
+                    <input type="text" id="loginUser" required class="inputBox">
                     <div>Password:</div>
-                    <input type="password" id="loginPassword" required/>
-                    <div><button type="submit">Login</button></div>
+                    <input type="password" id="loginPassword" required class="inputBox"/>
+                    <div><button type="submit" class="button">Login</button></div>
                 </form>
             </section>
 
@@ -53,17 +53,17 @@
                 <h1>Register:</h1>
                 <form id="formRegister">
                     <div>Username:</div>
-                    <input type="text" id="registerUser" required/>
+                    <input type="text" id="registerUser" required class="inputBox"/>
                     <div>Password:</div>
-                    <input type="password" id="registerPassword" required/>
+                    <input type="password" id="registerPassword" required class="inputBox"/>
                     <div>Password again:</div>
-                    <input type="password" id="registerPasswordConfirm" required/>
+                    <input type="password" id="registerPasswordConfirm" required class="inputBox"/>
                     <div>Full Name:</div>
-                    <input type="text" id="registerFullName" required/>
+                    <input type="text" id="registerFullName" required class="inputBox"/>
                     <div>Email:</div>
-                    <input type="email" id="registerEmail" required/>
+                    <input type="email" id="registerEmail" required class="inputBox"/>
 
-                    <div><button type="submit" id="buttonRegister">Register</button></div>
+                    <div><button type="submit" id="buttonRegister" class="button" >Register</button></div>
                 </form>
             </section>
 
@@ -78,9 +78,9 @@
                 <h1>New Advert</h1>
                 <form id="formCreateAdvert">
                     <div>Title of the advert:</div>
-                    <div><input type="text" id="advertTitle" required/></div>
+                    <div><input type="text" id="advertTitle" required class="inputBox"/></div>
                     <div>Category of the advert:</div>
-                    <div><select id="advertCategory" required>
+                    <div><select id="advertCategory" required class="inputBox">
                         <option value="1">Electronics</option>
                         <option value="2">Home & decoration</option>
                         <option value="3">Books</option>
@@ -91,10 +91,10 @@
                         <option value="8">Miscellaneous</option>
                     </select></div>
                     <div>Description:</div>
-                    <div><textarea id="advertDescription" required></textarea></div>
+                    <div><textarea rows="12" id="advertDescription" required class="inputBox"></textarea></div>
                     <div>Price:</div>
-                    <div><input type="number" id="advertPrice" required/></div>
-                    <div><input type="submit" value="Post"/></div>
+                    <div><input type="number" id="advertPrice" required class="inputBox"/></div>
+                    <div><input type="submit" value="Post" class="button"/></div>
                 </form>
             </section>
 

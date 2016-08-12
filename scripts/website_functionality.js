@@ -100,7 +100,7 @@ function register()  {
             showInfo("Registration successful!")
         }
     } else {
-        showError("The two passwords don't match, please re-enter them.");
+        showError("The two passwords don't match, please re-enter them!");
         $('#registerPassword').val("");
         $('#registerPasswordConfirm').val("");
     }
