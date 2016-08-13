@@ -4,16 +4,19 @@ const kinveyBaseUrl = 'https://baas.kinvey.com/';
 
 $(function() {
     showView("Home");
+    showHideNavigationLinks();
     $("#linkHome").click(function() {showView("Home")});
     $("#linkLogin").click(function() {showView("Login")});
     $("#linkRegister").click(function () {showView("Register")});
-    $("#linkAdverts").click(function () {showView("Adverts")});
-    $("#linkNewAdvert").click(function() {showView("NewAdvert")});
+    $("#linkAdverts").click(function () {showView("Adverts"); drawAdverts()});
+    $("#linkNewAdvert").click(function() {showView("NewAdvert");});
+    $("#linkMyAdverts").click(function() {showView("MyAdverts"); drawAdverts(sessionStorage.uid)});
+    $("#linkProfile").click(function() {showView("Profile")});
     $("#errorBox").click(function () {$("#errorBox").slideUp(300)});
     $("#infoBox").click(function () {$("#infoBox").slideUp(300)});
-    showHideNavigationLinks();
     $("#formLogin").submit(function (f) {f.preventDefault(); login()});
-    $("#formRegister").submit(function (f) {f.preventDefault();register()});
+    $("#formRegister").submit(function (f) {f.preventDefault(); register()});
+    $("#formCreateAdvert").submit(function (f) {f.preventDefault(); createAdvert();})
 });
 
 function showView(viewId) {
@@ -25,7 +28,7 @@ function showView(viewId) {
         $.when(sections.slideUp(300)).done(function() {view.slideDown(300)});
         buttons.removeClass("selected");
         button.addClass("selected");
-        sections.removeClass("current-selection");
+        sections.   removeClass("current-selection");
         view.addClass("current-selection");
     }
 }
@@ -37,13 +40,17 @@ function showHideNavigationLinks() {
         $("#linkRegister").hide();
         $("#linkAdverts").show();
         $("#linkNewAdvert").show();
+        $("#linkMyAdverts").show();
+        $("#linkProfile").show();
         $("#linkLogout").show();
         $("#headerGreeting").append("Greetings, " + sessionStorage.username + "!");
     } else {
         $("#linkLogin").show();
         $("#linkRegister").show();
-        $("#linkAdverts").hide();
+        $("#linkAdverts").show();
         $("#linkNewAdvert").hide();
+        $("#linkMyAdverts").hide();
+        $("#linkProfile").hide();
         $("#linkLogout").hide();
         $("#headerGreeting").empty();
     }
@@ -67,6 +74,8 @@ function login() {
     function loginSuccess(data, status) {
         sessionStorage.authToken = data._kmd.authtoken;
         sessionStorage.username = data.username;
+        sessionStorage.fullName = data.fullname;
+        sessionStorage.uid = data._id;
         showView("Home");
         showInfo("Login Successful!");
         showHideNavigationLinks();
@@ -95,6 +104,9 @@ function register()  {
         function registerSuccess(data, status) {
             sessionStorage.authToken = data._kmd.authtoken;
             sessionStorage.username = data.username;
+            sessionStorage.fullName = data.fullname;
+            sessionStorage.uid = data._id;
+
             showView("Home");
             showHideNavigationLinks();
             showInfo("Registration successful!")
@@ -105,6 +117,91 @@ function register()  {
         $('#registerPasswordConfirm').val("");
     }
 }
+
+function createAdvert() {
+    let advertsUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts";
+    let authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    let newAdvertData = {
+        title: $("#advertTitle").val(),
+        category: $("#advertCategory").val(),
+        description: $("#advertDescription").val(),
+        condition: $("#advertCondition").val(),
+        price: $("#advertPrice").val(),
+        phone: $("#advertPhone").val(),
+        image: $("#advertImage1Url").val(),
+        image2: $("#advertImage2Url").val(),
+        image3: $("#advertImage3Url").val(),
+        image4: $("#advertImage4Url").val(),
+        authorId: sessionStorage.uid,
+        authorUsername: sessionStorage.username,
+        authorFullName: sessionStorage.fullName
+    };
+    $.ajax({
+        method: "POST",
+        url: advertsUrl,
+        data: newAdvertData,
+        headers: authHeaders,
+        success: advertCreated,
+        error: showAjaxError
+    });
+    function advertCreated(data) {
+        let advertInputFields = $("#viewNewAdvert").find("input");
+        advertInputFields.val("");
+        $("#advertDescription").val("");
+        showView("Adverts");
+        showInfo("Advert successfully posted!")
+    }
+}
+
+function drawAdverts(userID) {
+    let getForUser = (userID != null);
+    let loggedIn = (sessionStorage.authToken != null);
+    let authBase64 = btoa("test:test");
+    let advertsGetUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts";
+    let authHeaders;
+    if (loggedIn){
+        authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    } else {
+        authHeaders = {"Authorization": "Basic " + authBase64}
+    }
+    $.ajax({
+        method: "GET",
+        url: advertsGetUrl,
+        headers: authHeaders,
+        success: advertsLoaded,
+        error: showAjaxError
+    });
+    function advertsLoaded (adverts, status) {
+        //showInfo("Adverts loaded successfully!");
+        $("#adverts").empty();
+        $("#myAdverts").empty();
+        if  (!getForUser) {
+            for (let advert of adverts) {
+                let advertDiv = $("<div>", {class: "advert"}); //.append(JSON.stringify(advert));
+                advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
+                advertDiv.append($("<div class='advertTitle'>").append(advert.title));
+                advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
+                advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
+                advertDiv.addClass("advertBox");
+                $("#adverts").append(advertDiv);
+            }
+        } else {
+            for (let advert of adverts) {
+                if (advert.authorId == userID) {
+                    let advertDiv = $("<div>", {class: "advert"}); //.append(JSON.stringify(advert));
+                    advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
+                    advertDiv.append($("<div class='advertTitle'>").append(advert.title));
+                    advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
+                    advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
+                    advertDiv.addClass("advertBox");
+                    $("#myAdverts").append(advertDiv);
+                }
+            }
+        }
+    }
+}
+
+
 
 function showAjaxError(data, status) {
     let errorMsg = '';

@@ -11,6 +11,7 @@ body {
 h1, p, div {
     color: #494949;
     font-size: 20px;
+    text-align: center;
 }
 
 .navbar {
@@ -121,4 +122,22 @@ section {
     color: #5d5d5d;
     background-color: #cacaca;
     transition: background-color .3s, color .3s;
+}
+
+.advertBox {
+    display: inline-block;
+    width: 25%;
+    height: 25%;
+    margin: 10px;
+    background-color: #cacaca;
+}
+
+.advertPrice {
+    display: inline-block;
+    width: 50%;
+}
+
+.advertCondition {
+    display: inline-block;
+    width: 50%;
 }

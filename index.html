@@ -16,6 +16,8 @@
                     <li class="navbar-link" id="linkRegister">Register</li>
                     <li class="navbar-link" id="linkAdverts">Adverts</li>
                     <li class="navbar-link" id="linkNewAdvert">New Advert</li>
+                    <li class="navbar-link" id="linkMyAdverts">My Adverts</li>
+                    <li class="navbar-link" id="linkProfile">Profile</li>
                     <li class="navbar-link" id="linkLogout" onclick="logout()">Logout</li>
                 </ul>
                 <div id="headerGreeting"></div>
@@ -42,9 +44,9 @@
                 <h1>Login</h1>
                 <form id="formLogin">
                     <div>Username:</div>
-                    <input type="text" id="loginUser" required class="inputBox">
+                    <div><input type="text" id="loginUser" required class="inputBox"></div>
                     <div>Password:</div>
-                    <input type="password" id="loginPassword" required class="inputBox"/>
+                    <div><input type="password" id="loginPassword" required class="inputBox"/></div>
                     <div><button type="submit" class="button">Login</button></div>
                 </form>
             </section>
@@ -53,16 +55,15 @@
                 <h1>Register:</h1>
                 <form id="formRegister">
                     <div>Username:</div>
-                    <input type="text" id="registerUser" required class="inputBox"/>
+                    <div><input type="text" id="registerUser" maxlength="42" required class="inputBox"/></div>
                     <div>Password:</div>
-                    <input type="password" id="registerPassword" required class="inputBox"/>
+                    <div><input type="password" id="registerPassword" maxlength="100" required class="inputBox"/></div>
                     <div>Password again:</div>
-                    <input type="password" id="registerPasswordConfirm" required class="inputBox"/>
+                    <div><input type="password" id="registerPasswordConfirm" maxlength="100" required class="inputBox"/></div>
                     <div>Full Name:</div>
-                    <input type="text" id="registerFullName" required class="inputBox"/>
+                    <div><input type="text" id="registerFullName" maxlength="100" required class="inputBox"/></div>
                     <div>Email:</div>
-                    <input type="email" id="registerEmail" required class="inputBox"/>
-
+                    <div><input type="email" id="registerEmail" maxlength="100" required class="inputBox"/></div>
                     <div><button type="submit" id="buttonRegister" class="button" >Register</button></div>
                 </form>
             </section>
@@ -74,11 +75,22 @@
                 </div>
             </section>
 
+            <section id="viewMyAdverts" style="display: none;">
+                <h1>My Adverts</h1>
+                <div id="myAdverts">
+
+                </div>
+            </section>
+
+            <section id="viewProfile" style="display: none;">
+                <h1>Profile</h1>
+            </section>
+
             <section id="viewNewAdvert" style="display: none;">
                 <h1>New Advert</h1>
                 <form id="formCreateAdvert">
                     <div>Title of the advert:</div>
-                    <div><input type="text" id="advertTitle" required class="inputBox"/></div>
+                    <div><input type="text" id="advertTitle" maxlength="100" required class="inputBox"/></div>
                     <div>Category of the advert:</div>
                     <div><select id="advertCategory" required class="inputBox">
                         <option value="1">Electronics</option>
@@ -91,9 +103,22 @@
                         <option value="8">Miscellaneous</option>
                     </select></div>
                     <div>Description:</div>
-                    <div><textarea rows="12" id="advertDescription" required class="inputBox"></textarea></div>
+                    <div><textarea rows="12" id="advertDescription" maxlength="6000" required class="inputBox"></textarea></div>
+                    <div>Condition:</div>
+                    <div><select id="advertCondition" required class="inputBox">
+                        <option value="New">New</option>
+                        <option value="Used">Used</option>
+                    </select></div>
                     <div>Price:</div>
-                    <div><input type="number" id="advertPrice" required class="inputBox"/></div>
+                    <div><input type="number" step="0.01" id="advertPrice" maxlength="20" required class="inputBox"/></div>
+                    <div>Contact phone:</div>
+                    <div><input type="text" step="0.01" id="advertPhone" maxlength="12" required class="inputBox"/></div>
+                    <div>Images:</div>
+                        <div><input type="url" id="advertImage1Url" class="inputBox" required placeholder="Required"></div>
+                        <div><input type="url" id="advertImage2Url" class="inputBox" placeholder="Optional">
+                        <div><input type="url" id="advertImage3Url" class="inputBox" placeholder="Optional"></div>
+                        <div><input type="url" id="advertImage4Url" class="inputBox" placeholder="Optional"></div>
+                    </div>
                     <div><input type="submit" value="Post" class="button"/></div>
                 </form>
             </section>
