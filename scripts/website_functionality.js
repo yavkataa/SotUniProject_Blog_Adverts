@@ -8,15 +8,17 @@ $(function() {
     $("#linkHome").click(function() {showView("Home")});
     $("#linkLogin").click(function() {showView("Login")});
     $("#linkRegister").click(function () {showView("Register")});
-    $("#linkAdverts").click(function () {showView("Adverts"); drawAdverts()});
+    $("#linkAdverts").click(function () {drawAdverts()});
     $("#linkNewAdvert").click(function() {showView("NewAdvert");});
-    $("#linkMyAdverts").click(function() {showView("MyAdverts"); drawAdverts(sessionStorage.uid)});
+    $("#linkMyAdverts").click(function() {drawAdverts(sessionStorage.uid); showView("MyAdverts")});
     $("#linkProfile").click(function() {showView("Profile")});
     $("#errorBox").click(function () {$("#errorBox").slideUp(300)});
     $("#infoBox").click(function () {$("#infoBox").slideUp(300)});
     $("#formLogin").submit(function (f) {f.preventDefault(); login()});
     $("#formRegister").submit(function (f) {f.preventDefault(); register()});
-    $("#formCreateAdvert").submit(function (f) {f.preventDefault(); createAdvert();})
+    $("#formCreateAdvert").submit(function (f) {f.preventDefault(); createAdvert();});
+    $(document).on("click", ".advertBox", function () {showAdvert($(this).attr("data-advert-id"))});
+    $("#backButton").click(function () {showPreviousView()});
 });
 
 function showView(viewId) {
@@ -28,8 +30,19 @@ function showView(viewId) {
         $.when(sections.slideUp(300)).done(function() {view.slideDown(300)});
         buttons.removeClass("selected");
         button.addClass("selected");
-        sections.   removeClass("current-selection");
+        let currentSelection = $(".current-selection");
+        $(".previous-selection").removeClass("previous-selection");
+        currentSelection.addClass("previous-selection");
+        currentSelection.removeClass("current-selection");
         view.addClass("current-selection");
+    }
+}
+
+function showPreviousView() {
+    if ($(".previous-selection").attr("id") == "viewMyAdverts   ") {
+        showView("MyAdverts");
+    } else {
+        showView("Adverts");
     }
 }
 
@@ -172,32 +185,66 @@ function drawAdverts(userID) {
         error: showAjaxError
     });
     function advertsLoaded (adverts, status) {
-        //showInfo("Adverts loaded successfully!");
         $("#adverts").empty();
         $("#myAdverts").empty();
-        if  (!getForUser) {
-            for (let advert of adverts) {
-                let advertDiv = $("<div>", {class: "advert"}); //.append(JSON.stringify(advert));
-                advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
-                advertDiv.append($("<div class='advertTitle'>").append(advert.title));
-                advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
-                advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
-                advertDiv.addClass("advertBox");
-                $("#adverts").append(advertDiv);
-            }
-        } else {
+        if (getForUser) {
             for (let advert of adverts) {
                 if (advert.authorId == userID) {
-                    let advertDiv = $("<div>", {class: "advert"}); //.append(JSON.stringify(advert));
+                    let advertDiv = $("<div>", {"class": "advertBox", "data-advert-id" : advert._id}); //.append(JSON.stringify(advert));
                     advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
                     advertDiv.append($("<div class='advertTitle'>").append(advert.title));
                     advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
                     advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
-                    advertDiv.addClass("advertBox");
                     $("#myAdverts").append(advertDiv);
                 }
             }
+        } else {
+            for (let advert of adverts) {
+                let advertDiv = $("<div>", {class: "advertBox", "data-advert-id" : advert._id}); //.append(JSON.stringify(advert));
+                advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
+                advertDiv.append($("<div class='advertTitle'>").append(advert.title));
+                advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
+                advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
+                $("#adverts").append(advertDiv);
+            }
+            showView("Adverts");
         }
+    }
+}
+
+function showAdvert(advertId) {
+    let loggedIn = (sessionStorage.authToken != null);
+    let authBase64 = btoa("test:test");
+    let advertGetUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts/" + advertId;
+    let authHeaders;
+    if (loggedIn){
+        authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    } else {
+        authHeaders = {"Authorization": "Basic " + authBase64}
+    }
+    $.ajax({
+        method: "GET",
+        url: advertGetUrl,
+        headers: authHeaders,
+        success: advertLoaded,
+        error: showAjaxError
+    });
+    function advertLoaded(advert) {
+        $(".func").remove();
+        $('#showAdvertTitle').text(advert.title);
+        $('#showAdvertImage1').prop("src", advert.image);
+        $('#showAdvertImage2').prop("src", advert.image2);
+        $('#showAdvertImage3').prop("src", advert.image3);
+        $('#showAdvertImage4').prop("src", advert.image4);
+        $('#showAdvertDescription').text(advert.description);
+        $('#showAdvertCondition').text(advert.condition);
+        $('#showAdvertPrice').text(advert.price);
+        $('#showAdvertPhone').text(advert.phone);
+        $('#showAdvertUser').text(advert.authorUsername);
+        if (advert.authorId == sessionStorage.uid) {
+            let sel = $("#viewShowAdvert").append($("<div>").append($("<button class='func button'>Delete advert</button>")));
+        }
+        showView("ShowAdvert");
     }
 }
 

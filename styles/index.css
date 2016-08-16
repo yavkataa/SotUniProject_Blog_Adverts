@@ -141,3 +141,7 @@ section {
     display: inline-block;
     width: 50%;
 }
+
+.advertBox:hover {
+    cursor: pointer;
+}
