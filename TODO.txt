@@ -1,7 +1,7 @@
 //DONE: view particular advert
-(WIP) edit advert if creator of it
-(WIP) edit/delete adverts
-user permission account flags (so admin accounts can delete any advert)
-view/edit user profile information
+//DONE: edit advert if creator of it
+//DONE: edit/delete adverts
+(delaying for the future) user permission account flags (so admin accounts can delete any advert)
+(WIP) view/edit user profile information
 
 //DONE: back button idea - add previousPageSelected to currentPageSelected and then remove currentPageSelected from this one, add currentPageSelected to new selection

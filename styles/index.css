@@ -145,3 +145,9 @@ section {
 .advertBox:hover {
     cursor: pointer;
 }
+
+.advertImage {
+    max-width: 40%;
+    max-height: 40%;
+
+}

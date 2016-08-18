@@ -11,13 +11,25 @@ $(function() {
     $("#linkAdverts").click(function () {drawAdverts()});
     $("#linkNewAdvert").click(function() {showView("NewAdvert");});
     $("#linkMyAdverts").click(function() {drawAdverts(sessionStorage.uid); showView("MyAdverts")});
-    $("#linkProfile").click(function() {showView("Profile")});
+    $("#linkProfile").click(function() {profileLoadInformation(); showView("Profile")});
     $("#errorBox").click(function () {$("#errorBox").slideUp(300)});
     $("#infoBox").click(function () {$("#infoBox").slideUp(300)});
     $("#formLogin").submit(function (f) {f.preventDefault(); login()});
     $("#formRegister").submit(function (f) {f.preventDefault(); register()});
     $("#formCreateAdvert").submit(function (f) {f.preventDefault(); createAdvert();});
-    $(document).on("click", ".advertBox", function () {showAdvert($(this).attr("data-advert-id"))});
+    $("#formEditAdvert").submit(function (f) {f.preventDefault(); editAdvert($("#viewEditAdvert").attr("data-post-id"))});
+    $(document)
+        .on("click", ".advertBox", function () {showAdvert($(this).attr("data-advert-id"))})
+        .on("click", "#buttonEditAdvert", function () {
+            showEditAdvertView($("#viewShowAdvert")
+                .attr("data-post-id"))
+        })
+        .on("click", "#buttonDeleteAdvert", function () {
+            showDeleteAdvertConfirmation();
+        })
+        .on("click", "#confirmAdvertDelete", function () {
+            deleteAdvert($('#viewShowAdvert').attr("data-post-id"));
+        });
     $("#backButton").click(function () {showPreviousView()});
 });
 
@@ -39,7 +51,7 @@ function showView(viewId) {
 }
 
 function showPreviousView() {
-    if ($(".previous-selection").attr("id") == "viewMyAdverts   ") {
+    if ($(".previous-selection").attr("id") == "viewMyAdverts") {
         showView("MyAdverts");
     } else {
         showView("Adverts");
@@ -89,6 +101,7 @@ function login() {
         sessionStorage.username = data.username;
         sessionStorage.fullName = data.fullname;
         sessionStorage.uid = data._id;
+        sessionStorage.email = data.email;
         showView("Home");
         showInfo("Login Successful!");
         showHideNavigationLinks();
@@ -119,7 +132,7 @@ function register()  {
             sessionStorage.username = data.username;
             sessionStorage.fullName = data.fullname;
             sessionStorage.uid = data._id;
-
+            sessionStorage.email = data.email;
             showView("Home");
             showHideNavigationLinks();
             showInfo("Registration successful!")
@@ -129,6 +142,15 @@ function register()  {
         $('#registerPassword').val("");
         $('#registerPasswordConfirm').val("");
     }
+}
+
+function profileLoadInformation() {
+    let email = $("#profileEmail").empty();
+    let fullname = $("#profileFullName").empty();
+    let username =  $("#profileUsername").empty();
+    email.text(sessionStorage.email);
+    fullname.text(sessionStorage.fullname);
+    username.text(sessionStorage.username);
 }
 
 function createAdvert() {
@@ -241,10 +263,93 @@ function showAdvert(advertId) {
         $('#showAdvertPrice').text(advert.price);
         $('#showAdvertPhone').text(advert.phone);
         $('#showAdvertUser').text(advert.authorUsername);
+        let sel = $('#viewShowAdvert');
+        sel.attr("data-post-id", advertId);
+        sel.attr("data-post-category", advert.category);
         if (advert.authorId == sessionStorage.uid) {
-            let sel = $("#viewShowAdvert").append($("<div>").append($("<button class='func button'>Delete advert</button>")));
+            sel.append($("<div>").append($("<button class='func button' id='buttonEditAdvert'>Edit advert</button>")));
+            sel.append($("<div>").append($("<button class='func button' id='buttonDeleteAdvert'>Delete advert</button>")));
         }
         showView("ShowAdvert");
+    }
+}
+
+function showEditAdvertView(advertId) {
+    $("#viewEditAdvert").attr("data-post-id", advertId);
+    let postTitle = $('#showAdvertTitle').text();
+    let postImage1= $('#showAdvertImage1').attr("src");
+    let postImage2= $('#showAdvertImage2').attr("src");
+    let postImage3= $('#showAdvertImage3').attr("src");
+    let postImage4= $('#showAdvertImage4').attr("src");
+    let postDescription = $('#showAdvertDescription').text();
+    let postCondition = $('#showAdvertCondition').text();
+    let postPrice = $('#showAdvertPrice').text();
+    let postPhone = $('#showAdvertPhone').text();
+    let postCategory = $('#viewShowAdvert').attr("data-post-category");
+    $('#advertTitleEdit').val(postTitle);
+    $('#advertCategoryEdit').val(postCategory);
+    $('#advertImage1UrlEdit').val(postImage1);
+    $('#advertImage2UrlEdit').val(postImage2);
+    $('#advertImage3UrlEdit').val(postImage3);
+    $('#advertImage4UrlEdit').val(postImage4);
+    $('#advertDescriptionEdit').val(postDescription);
+    $('#advertConditionEdit').val(postCondition);
+    $('#advertPriceEdit').val(postPrice);
+    $('#advertPhoneEdit').val(postPhone);
+    showView("EditAdvert");
+}
+
+function editAdvert(advertId) {
+    let advertEditUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts/" + advertId;
+    let authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    let putData = {
+        title: $("#advertTitleEdit").val(),
+        category: $("#advertCategoryEdit").val(),
+        description: $("#advertDescriptionEdit").val(),
+        condition: $("#advertConditionEdit").val(),
+        price: $("#advertPriceEdit").val(),
+        phone: $("#advertPhoneEdit").val(),
+        image: $("#advertImage1UrlEdit").val(),
+        image2: $("#advertImage2UrlEdit").val(),
+        image3: $("#advertImage3UrlEdit").val(),
+        image4: $("#advertImage4UrlEdit").val(),
+        authorId: sessionStorage.uid,
+        authorUsername: sessionStorage.username,
+        authorFullName: sessionStorage.fullName
+    };
+    $.ajax({
+        method: "PUT",
+        url: advertEditUrl,
+        data: putData,
+        headers: authHeaders,
+        success: advertEdited,
+        error: showAjaxError
+    });
+    function advertEdited(data) {
+        showInfo("Advert edited successfully!");
+        showView("MyAdverts");
+    }
+}
+
+function showDeleteAdvertConfirmation() {
+    $("#buttonDeleteAdvert").after($("<div style='display: none;'>Warning: This is permanent and cannot be recovered! <br/> Click the button to confirm and delete the advert: <div><button class='func button' id='confirmAdvertDelete'>Confirm</button></div>").fadeIn(300)).hide();
+}
+
+function deleteAdvert(advertId) {
+    let advertDeleteUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts/" + advertId;
+    let authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    $.ajax({
+        method: "DELETE",
+        url: advertDeleteUrl,
+        headers: authHeaders,
+        success: advertDeleted,
+        error: showAjaxError
+    });
+    function advertDeleted(data) {
+        //don't know why i'm getting the data here it only returns how many entities were deleted which should be 1 if it passes lol
+        showInfo("Advert deleted successfully!");
+        drawAdverts(sessionStorage.uid);
+        showView("MyAdverts");
     }
 }
 
