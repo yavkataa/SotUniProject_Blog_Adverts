@@ -81,28 +81,41 @@
             </section>
             <section id="viewProfile" style="display: none;">
                 <div>Username:</div>
-                <div id="profileUsername"></div>
+                <div id="profileUsername" class="textBox"></div>
                 <div>Full Name:</div>
-                <div id="profileFullName"></div>
+                <div id="profileFullName" class="textBox"></div>
                 <div>Email:</div>
-                <div id="profileEmail"></div>
+                <div id="profileEmail" class="textBox"></div>
             </section>
 
             <section id="viewShowAdvert" style="display: none;">
-                <div><button id="backButton" class="button">Back to adverts</button></div>
-                <div id="showAdvertTitle"></div>
-                <div id="showAdvertImages">
-                    <img src="" id="showAdvertImage1" class="advertImage"/>
-                    <img src="" id="showAdvertImage2" class="advertImage"/>
-                    <img src="" id="showAdvertImage3" class="advertImage"/>
-                    <img src="" id="showAdvertImage4" class="advertImage"/>
+                <div id="viewShowAdvertWrapper">
+                    <div><button id="backButton" class="button">Back to adverts</button></div>
+                    <div id="showAdvertTitle" class="textBox"></div>
+                    <div id="showAdvertImages">
+                        <a id="lightboxImg1" target="_blank"><img src="" id="showAdvertImage1" class="advertImage"/></a>
+                        <a id="lightboxImg2" target="_blank"><img src="" id="showAdvertImage2" class="advertImage"/></a>
+                        <a id="lightboxImg3" target="_blank"><img src="" id="showAdvertImage3" class="advertImage"/></a>
+                        <a id="lightboxImg4" target="_blank"><img src="" id="showAdvertImage4" class="advertImage"/></a>
+                    </div>
+                    <div id="advertDescriptionWrapper">
+                        <div id="showAdvertDescription" class="textBox"></div>
+                        <div id="showAdvertCondition" class="textBox"></div>
+                        <div id="showAdvertPrice" class="textBox"></div>
+                        <div id="showAdvertPhone" class="textBox"></div>
+                        <div id="showAdvertUser" class="textBox"></div>
+                        <div id="showAdvertDate" class="textBox"></div>
+                    </div>
+                    <div id="showAdvertComments" style="display: none">
+                        <button class="button" id="showAdvertWriteComment">Leave comment</button>
+                        <form id="formComment">
+                            <div><input id="commentTitle" class="inputBox" required/></div>
+                            <div><textarea id="commentContent" rows="5" class="inputBox" maxlength="1000" required></textarea></div>
+                            <button type="submit" id="commentSend" class="button">Send</button>
+                        </form>
+                    </div>
+                <div id="showAdvertDrawComments"></div>
                 </div>
-                <div id="showAdvertDescription"></div>
-                <div id="showAdvertCondition"></div>
-                <div id="showAdvertPrice"></div>
-                <div id="showAdvertPhone"></div>
-                <div id="showAdvertUser"></div>
-
             </section>
 
 

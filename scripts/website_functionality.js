@@ -18,6 +18,8 @@ $(function() {
     $("#formRegister").submit(function (f) {f.preventDefault(); register()});
     $("#formCreateAdvert").submit(function (f) {f.preventDefault(); createAdvert();});
     $("#formEditAdvert").submit(function (f) {f.preventDefault(); editAdvert($("#viewEditAdvert").attr("data-post-id"))});
+    $("#showAdvertWriteComment").click(function () {$("#formComment").fadeIn(300)});
+    $("#formComment").submit(function (f) {f.preventDefault(); submitComment()});
     $(document)
         .on("click", ".advertBox", function () {showAdvert($(this).attr("data-advert-id"))})
         .on("click", "#buttonEditAdvert", function () {
@@ -191,7 +193,7 @@ function createAdvert() {
 function drawAdverts(userID) {
     let getForUser = (userID != null);
     let loggedIn = (sessionStorage.authToken != null);
-    let authBase64 = btoa("test:test");
+    let authBase64 = btoa("view:eqk3bfenagf4yuceaewnbb8q95ptfc2h2dt8c5xxywg394du5zwtj2hywg9mwn78kwddz45vptqq7wyxye8vnjdgvd7");
     let advertsGetUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts";
     let authHeaders;
     if (loggedIn){
@@ -236,7 +238,7 @@ function drawAdverts(userID) {
 
 function showAdvert(advertId) {
     let loggedIn = (sessionStorage.authToken != null);
-    let authBase64 = btoa("test:test");
+    let authBase64 = btoa("view:eqk3bfenagf4yuceaewnbb8q95ptfc2h2dt8c5xxywg394du5zwtj2hywg9mwn78kwddz45vptqq7wyxye8vnjdgvd7");
     let advertGetUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/adverts/" + advertId;
     let authHeaders;
     if (loggedIn){
@@ -255,22 +257,66 @@ function showAdvert(advertId) {
         $(".func").remove();
         $('#showAdvertTitle').text(advert.title);
         $('#showAdvertImage1').prop("src", advert.image);
+        $('#lightboxImg1').prop("href", advert.image);
         $('#showAdvertImage2').prop("src", advert.image2);
+        $('#lightboxImg2').prop("href", advert.image2);
         $('#showAdvertImage3').prop("src", advert.image3);
+        $('#lightboxImg3').prop("href", advert.image3);
         $('#showAdvertImage4').prop("src", advert.image4);
-        $('#showAdvertDescription').text(advert.description);
-        $('#showAdvertCondition').text(advert.condition);
-        $('#showAdvertPrice').text(advert.price);
-        $('#showAdvertPhone').text(advert.phone);
-        $('#showAdvertUser').text(advert.authorUsername);
+        $('#lightboxImg4').prop("href", advert.image4);
+        $('#showAdvertDescription').text("Description: " + advert.description);
+        $('#showAdvertCondition').text("Condition: " + advert.condition);
+        $('#showAdvertPrice').text("Price: $" + advert.price);
+        $('#showAdvertPhone').text("Phone: " + advert.phone);
+        $('#showAdvertUser').text("Posted by: " + advert.authorUsername);
+        $('#showAdvertDate').text("Posted on: " + advert._kmd.ect.substr(0, 10) + " at " + advert._kmd.ect.substr(11, 5));
         let sel = $('#viewShowAdvert');
         sel.attr("data-post-id", advertId);
         sel.attr("data-post-category", advert.category);
-        if (advert.authorId == sessionStorage.uid) {
+        if (advert.authorId === sessionStorage.uid) {
             sel.append($("<div>").append($("<button class='func button' id='buttonEditAdvert'>Edit advert</button>")));
             sel.append($("<div>").append($("<button class='func button' id='buttonDeleteAdvert'>Delete advert</button>")));
         }
+        if (loggedIn) {
+            $("#showAdvertComments").fadeIn(300);
+            $("#formComment").hide();
+        }
+        loadComments(advertId);
         showView("ShowAdvert");
+    }
+}
+
+function loadComments(advertId) {
+    let loggedIn = (sessionStorage.authToken != null);
+    let authBase64 = btoa("view:eqk3bfenagf4yuceaewnbb8q95ptfc2h2dt8c5xxywg394du5zwtj2hywg9mwn78kwddz45vptqq7wyxye8vnjdgvd7");
+    let commentsGetUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/comments";
+    let authHeaders;
+    if (loggedIn){
+        authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    } else {
+        authHeaders = {"Authorization": "Basic " + authBase64}
+    }
+    $.ajax({
+        method: "GET",
+        url: commentsGetUrl,
+        headers: authHeaders,
+        success: commentsLoaded,
+        error: showAjaxError
+    });
+    function commentsLoaded(comments) {
+        $("#showAdvertDrawComments").empty();
+        for (let comment of comments) {
+            if (comment.post_id == advertId) {
+                let com = $("<div class='commentBox'>");
+                com.append($("<div>").append("<span class='commentTitle'>" + comment.title + "</span>"));
+                com.append($("<div>").append("<span class='commentUserDateTime'><i>Posted by</i> " + comment.author_username +
+                    " <i>on</i> " + comment._kmd.ect.substr(0, 10) +
+                    " <i>at</i> " + comment._kmd.ect.substr(11, 5) +
+                    ", <i>and they've said:</i></span> "));
+                com.append($("<div>").append(comment.content));
+                $("#showAdvertDrawComments").append(com);
+            }
+        }
     }
 }
 
@@ -332,7 +378,7 @@ function editAdvert(advertId) {
 }
 
 function showDeleteAdvertConfirmation() {
-    $("#buttonDeleteAdvert").after($("<div style='display: none;'>Warning: This is permanent and cannot be recovered! <br/> Click the button to confirm and delete the advert: <div><button class='func button' id='confirmAdvertDelete'>Confirm</button></div>").fadeIn(300)).hide();
+    $("#buttonDeleteAdvert").after($("<div class='func' style='display: none;'>Warning: This is permanent and cannot be recovered! <br/> Click the button to confirm and delete the advert: <div><button class='func button' id='confirmAdvertDelete'>Confirm</button></div>").fadeIn(300)).hide();
 }
 
 function deleteAdvert(advertId) {
@@ -345,11 +391,41 @@ function deleteAdvert(advertId) {
         success: advertDeleted,
         error: showAjaxError
     });
-    function advertDeleted(data) {
-        //don't know why i'm getting the data here it only returns how many entities were deleted which should be 1 if it passes lol
+    function advertDeleted() {
         showInfo("Advert deleted successfully!");
         drawAdverts(sessionStorage.uid);
         showView("MyAdverts");
+    }
+}
+
+function submitComment() {
+    let commentCreateUrl = kinveyBaseUrl + "appdata/" + kinveyAppID + "/comments";
+    let authHeaders = {"Authorization": "Kinvey " + sessionStorage.authToken};
+    let postId = $("#viewShowAdvert").attr("data-post-id");
+    let authorUsername = sessionStorage.username;
+    let authorId = sessionStorage.uid;
+    let commentTitle = $("#commentTitle").val();
+    let commentContent = $("#commentContent").val();
+    let newCommentData = {
+        title: commentTitle,
+        content: commentContent,
+        post_id: postId,
+        author_id: authorId,
+        author_username: authorUsername
+    };
+
+    $.ajax({
+        method: "POST",
+        url: commentCreateUrl,
+        data: newCommentData,
+        headers: authHeaders,
+        success: commentPosted,
+        error: showAjaxError
+    });
+    function commentPosted() {
+        showInfo("Comment posted successfully!");
+        $("#formComment").fadeOut(300);
+        showAdvert(postId);
     }
 }
 

@@ -2,6 +2,7 @@
 //DONE: edit advert if creator of it
 //DONE: edit/delete adverts
 (delaying for the future) user permission account flags (so admin accounts can delete any advert)
-(WIP) view/edit user profile information
-
+(WIP) view/edit user profile information PS: still WIP as i can't think of anything reasonable to do for this
+//DONE: comments on posts
 //DONE: back button idea - add previousPageSelected to currentPageSelected and then remove currentPageSelected from this one, add currentPageSelected to new selection
+//DONE: spruce up the CSS to make the site actually look like something.
