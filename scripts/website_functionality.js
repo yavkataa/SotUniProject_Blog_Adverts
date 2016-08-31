@@ -61,25 +61,25 @@ function showPreviousView() {
 }
 
 function showHideNavigationLinks() {
-    let loggedIn = (sessionStorage.authToken != null);
-    if (loggedIn) {
-        $("#linkLogin").hide();
-        $("#linkRegister").hide();
-        $("#linkAdverts").show();
-        $("#linkNewAdvert").show();
-        $("#linkMyAdverts").show();
-        $("#linkProfile").show();
-        $("#linkLogout").show();
-        $("#headerGreeting").append("Greetings, " + sessionStorage.username + "!");
-    } else {
-        $("#linkLogin").show();
-        $("#linkRegister").show();
-        $("#linkAdverts").show();
-        $("#linkNewAdvert").hide();
-        $("#linkMyAdverts").hide();
-        $("#linkProfile").hide();
-        $("#linkLogout").hide();
-        $("#headerGreeting").empty();
+        let loggedIn = (sessionStorage.authToken != null);
+        if (loggedIn) {
+            $("#linkLogin").hide();
+            $("#linkRegister").hide();
+            $("#linkAdverts").show();
+            $("#linkNewAdvert").show();
+            $("#linkMyAdverts").show();
+            $("#linkProfile").show();
+            $("#linkLogout").show();
+            $("#headerGreeting").append("Greetings, " + sessionStorage.username + "!");
+        } else {
+            $("#linkLogin").show();
+            $("#linkRegister").show();
+            $("#linkAdverts").show();
+            $("#linkNewAdvert").hide();
+            $("#linkMyAdverts").hide();
+            $("#linkProfile").hide();
+            $("#linkLogout").hide();
+            $("#headerGreeting").empty();
     }
 }
 
@@ -151,7 +151,7 @@ function profileLoadInformation() {
     let fullname = $("#profileFullName").empty();
     let username =  $("#profileUsername").empty();
     email.text(sessionStorage.email);
-    fullname.text(sessionStorage.fullname);
+    fullname.text(sessionStorage.fullName);
     username.text(sessionStorage.username);
 }
 
@@ -216,7 +216,7 @@ function drawAdverts(userID) {
                 if (advert.authorId == userID) {
                     let advertDiv = $("<div>", {"class": "advertBox", "data-advert-id" : advert._id}); //.append(JSON.stringify(advert));
                     advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
-                    advertDiv.append($("<div class='advertTitle'>").append(advert.title));
+                    advertDiv.append($("<div class='advertTitle'>").append($("<span class=advertTitleRow>").append(advert.title)));
                     advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
                     advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
                     $("#myAdverts").append(advertDiv);
@@ -226,7 +226,7 @@ function drawAdverts(userID) {
             for (let advert of adverts) {
                 let advertDiv = $("<div>", {class: "advertBox", "data-advert-id" : advert._id}); //.append(JSON.stringify(advert));
                 advertDiv.append($("<div>").append($('<img>', {src: advert.image, width: "100%"})));
-                advertDiv.append($("<div class='advertTitle'>").append(advert.title));
+                advertDiv.append($("<div class='advertTitle'>").append($("<span class=advertTitleRow>").append(advert.title)));
                 advertDiv.append($("<div class='advertCondition'>").append(advert.condition));
                 advertDiv.append($("<div class='advertPrice'>").append("$" + advert.price + " USD"));
                 $("#adverts").append(advertDiv);
@@ -378,7 +378,7 @@ function editAdvert(advertId) {
 }
 
 function showDeleteAdvertConfirmation() {
-    $("#buttonDeleteAdvert").after($("<div class='func' style='display: none;'>Warning: This is permanent and cannot be recovered! <br/> Click the button to confirm and delete the advert: <div><button class='func button' id='confirmAdvertDelete'>Confirm</button></div>").fadeIn(300)).hide();
+    $("#buttonDeleteAdvert").after($("<div class='func' style='display: none; color: #494949'>Warning: This is permanent and cannot be recovered! <br/> Click the button to confirm and delete the advert: <div><button class='func button' id='confirmAdvertDelete'>Confirm</button></div>").fadeIn(300)).hide();
 }
 
 function deleteAdvert(advertId) {
@@ -465,5 +465,3 @@ function logout() {
     showHideNavigationLinks();
     showInfo("Logged out.");
 }
-
-

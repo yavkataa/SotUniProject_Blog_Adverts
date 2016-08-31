@@ -8,15 +8,21 @@ body {
     margin: 0;
 }
 
-h1, p, div {
+p, div {
     color: #cacaca;
     font-size: 20px;
     text-align: center;
 }
 
+h1 {
+    color: #494949;
+    font-size: 24px;
+    text-align: center;
+}
+
 .navbar {
     width: 100%;
-    background-color: rgb(93, 93, 93);
+    background-color: #494949;
     padding: 5px 0;
 }
 
@@ -55,7 +61,7 @@ footer {
     margin: 0 auto;
     text-align: center;
     height: 50px;
-    background-color: #5d5d5d;
+    background-color: #494949;
     color: white;
 }
 
@@ -78,12 +84,12 @@ section {
 
 #errorBox {
     background-color: rgba(255, 0, 0, 0.4);
-    color: #ffffff;
+    color: #494949;
 }
 
 #infoBox {
     background-color: rgba(0, 255, 0, 0.4);
-    color: #ffffff;
+    color: #494949;
 }
 
 .inputBox {
@@ -116,7 +122,7 @@ section {
     width: 120px;
     padding: 10px;
     border: none;
-    background-color: #5d5d5d;
+    background-color: #494949;
     color: #ffffff;
     transition: background-color .3s, color .3s;
     outline: transparent none;
@@ -127,6 +133,7 @@ section {
     color: #5d5d5d;
     background-color: #cacaca;
     transition: background-color .3s, color .3s;
+    cursor: pointer;
 }
 
 .advertBox {
@@ -134,6 +141,8 @@ section {
     width: 25%;
     height: 25%;
     margin: 10px;
+    background-color: #494949;
+    border-radius: 24px;
 }
 
 .advertPrice {
@@ -165,11 +174,12 @@ section {
     margin: 0 auto;
 }
 
-.commentBox {
+.commentBox, #homeBox{
     background-color: #494949;
     border-radius: 24px;
     margin-bottom: 10px;
     margin-top: 10px;
+    padding: 5px 10px;
 }
 
 #showAdvertTitle {
@@ -225,6 +235,37 @@ img {
     border-radius: 24px;
 }
 
-#loadingBox {
-    background-color: #cacaca;
+#profileEmail, #profileFullName, #profileUsername {
+    display: block;
+    margin: 0 auto;
+    width: 20%;
 }
+
+form {
+    background-color: #494949;
+    border-radius: 24px;
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#profileEmailText, #profileUsernameText, #profileFullNameText {
+    color: #494949;
+}
+
+textarea {
+    max-width: 300px;
+}
+
+#advertMiddleBackgroundWrapper {
+    background-color: #ffffff;
+    border-radius: 24px;
+}
+
+.advertTitleRow {
+    font-size: 22px;
+    font-weight: 500;
+}
+
